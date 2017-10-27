@@ -1,0 +1,27 @@
+{
+	"name": "Teegschwendner Favorite Tea Saver",
+	"version": "0.1",
+	"manifest_version": 2,
+	"description": "Let's you rate the teas on teegschwendner.de for the next time you want to get some new tea.",
+	/*
+	"icons": {
+		"16": "menu/icon_16.png",
+		"48": "menu/icon_48.png"
+	},
+	*/
+	"permissions": [
+		"storage",
+		"activeTab",
+		"*://www.teegschwendner.de/*"
+	],
+	"content_scripts": [
+		{
+			"matches": [
+				"*://www.teegschwendner.de/*"
+			],
+			"js": [
+				"mark.js"
+			]
+		}
+	]
+}
