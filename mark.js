@@ -34,13 +34,13 @@ storage.get(key, function (result) {
 
 function markTea(teas) {
 	//go through all product boxes
-	let box = document.getElementsByClassName('product--box box--basic');
+	let boxes = document.getElementsByClassName('product--box box--basic');
 	let nr = '';
 	let ratingDiv = [];
-	for (let i = 0; i < box.length; i++) {
+	for (let i = 0; i < boxes.length; i++) {
 		//get the tea nr
-		nr = box[i].getAttribute('data-ordernumber');
-		box[i].style.borderBottom = '1px solid #333';
+		nr = boxes[i].getAttribute('data-ordernumber');
+		boxes[i].style.borderBottom = '1px solid #333';
 
 		//create the rating div
 		ratingDiv[i] = document.createElement('div');
@@ -49,7 +49,7 @@ function markTea(teas) {
 		ratingDiv[i].style.postion = 'relative';
 		ratingDiv[i].style.width = '100%';
 		ratingDiv[i].style.alignContent = 'center';
-		box[i].appendChild(ratingDiv[i]);
+		boxes[i].appendChild(ratingDiv[i]);
 		generateRating(nr);
 	}
 
@@ -61,7 +61,7 @@ function markTea(teas) {
 		
 		//check if the current tea was already rated
 		for (let t of teas) {
-			if (t.nr === parseInt(nr)) {
+			if (t.nr === nr) {
 				rating = t.rating;
 				break;
 			}
@@ -126,8 +126,17 @@ function markTea(teas) {
 				nr: nr,
 				rating: r
 			};
-			//add it to the array
-			teas.push(obj);
+			//add it to the array if it doesn't exist already, in which case it the rating should be overwritten
+			let replaced = false;
+			for (let t of teas) {
+				if (t.nr === nr) {
+					t.rating = r;
+					replaced = true;
+				}
+			}
+			if (!replaced) {
+				teas.push(obj);
+			}
 
 			//and save the whole array
 			storage.set({[key]: teas})
